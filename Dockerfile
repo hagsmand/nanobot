@@ -23,7 +23,12 @@ RUN mkdir -p nanobot bridge && touch nanobot/__init__.py && \
 # Copy the full source and install
 COPY nanobot/ nanobot/
 COPY bridge/ bridge/
-RUN uv pip install --system --no-cache .
+RUN uv pip install --system --no-cache . && \
+    uv pip install --system --no-cache aiohttp
+
+# Copy gateway wrapper script
+COPY gateway_with_http.py /app/gateway_with_http.py
+RUN chmod +x /app/gateway_with_http.py
 
 # Build the WhatsApp bridge
 WORKDIR /app/bridge
@@ -51,4 +56,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 # Use init script as entrypoint
 # This substitutes environment variables before starting nanobot
 ENTRYPOINT ["/usr/local/bin/init-config.sh"]
-CMD ["gateway"]
+CMD ["python", "/app/gateway_with_http.py"]

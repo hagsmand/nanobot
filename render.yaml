@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: nanobot-gateway
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerCommand: python /app/gateway_with_http.py
+    plan: free
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: CEREBRAS_API_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+    disk:
+      name: nanobot-config
+      mountPath: /root/.nanobot
+      sizeGB: 1
+    autoDeploy: true
+
+# Made with Bob
