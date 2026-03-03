@@ -12,10 +12,6 @@ services:
         sync: false
       - key: TELEGRAM_BOT_TOKEN
         sync: false
-    disk:
-      name: nanobot-config
-      mountPath: /root/.nanobot
-      sizeGB: 1
     autoDeploy: true
 
 # Made with Bob
