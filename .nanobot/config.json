@@ -1,25 +1,29 @@
 {
-  "providers": {
-    "openrouter": {
-      "apiKey": "${OPENROUTER_API_KEY}"
+    "providers": {
+        "openrouter": {
+            "apiKey": "${OPENROUTER_API_KEY}"
+        },
+        "custom": {
+            "apiKey": "${CEREBRAS_API_KEY}",
+            "apiBase": "https://api.cerebras.ai/v1/chat/completions"
+        }
+    },
+    "agents": {
+        "defaults": {
+            "model": "gpt-oss-120b",
+            "provider": "custom",
+            "temperature": 0.7,
+            "maxTokens": 2048
+        }
+    },
+    "channels": {
+        "telegram": {
+            "enabled": false,
+            "token": "${TELEGRAM_BOT_TOKEN}",
+            "allowFrom": []
+        }
+    },
+    "tools": {
+        "restrictToWorkspace": true
     }
-  },
-  "agents": {
-    "defaults": {
-      "model": "anthropic/claude-sonnet-3.5",
-      "provider": "openrouter",
-      "temperature": 0.7,
-      "maxTokens": 2048
-    }
-  },
-  "channels": {
-    "telegram": {
-      "enabled": false,
-      "token": "${TELEGRAM_BOT_TOKEN}",
-      "allowFrom": []
-    }
-  },
-  "tools": {
-    "restrictToWorkspace": true
-  }
 }
