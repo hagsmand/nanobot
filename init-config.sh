@@ -50,11 +50,18 @@ fi
 
 # Replace TELEGRAM_USER_ID (optional)
 if [ ! -z "$TELEGRAM_USER_ID" ]; then
-    # Add user ID to allowFrom array
+    # Add user ID to allowFrom array (handles both [] and ["*"])
     sed -i "s|\"allowFrom\": \[\]|\"allowFrom\": [\"$TELEGRAM_USER_ID\"]|g" "$CONFIG_FILE"
+    sed -i "s|\"allowFrom\": \[\"\*\"\]|\"allowFrom\": [\"$TELEGRAM_USER_ID\"]|g" "$CONFIG_FILE"
     echo "✓ Added TELEGRAM_USER_ID to allowFrom"
 else
     echo "ℹ TELEGRAM_USER_ID not set (optional)"
+fi
+
+# Enable Telegram if token is provided
+if [ ! -z "$TELEGRAM_BOT_TOKEN" ]; then
+    sed -i 's|"enabled": false|"enabled": true|g' "$CONFIG_FILE"
+    echo "✓ Enabled Telegram channel"
 fi
 
 echo "=========================================="

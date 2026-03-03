@@ -40,6 +40,12 @@ async def run_gateway():
     
     print(f"🐈 Starting nanobot gateway...")
     
+    # Initialize variables that might be used in finally block
+    agent = None
+    heartbeat = None
+    cron = None
+    channels = None
+    
     try:
         # Import gateway internals
         from nanobot.agent.loop import AgentLoop
@@ -197,11 +203,15 @@ async def run_gateway():
     except KeyboardInterrupt:
         print("\nShutting down...")
     finally:
-        await agent.close_mcp()
-        heartbeat.stop()
-        cron.stop()
-        agent.stop()
-        await channels.stop_all()
+        if agent:
+            await agent.close_mcp()
+            agent.stop()
+        if heartbeat:
+            heartbeat.stop()
+        if cron:
+            cron.stop()
+        if channels:
+            await channels.stop_all()
         await http_runner.cleanup()
 
 

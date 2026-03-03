@@ -18,9 +18,9 @@
     },
     "channels": {
         "telegram": {
-            "enabled": true,
+            "enabled": false,
             "token": "${TELEGRAM_BOT_TOKEN}",
-            "allowFrom": []
+            "allowFrom": ["*"]
         }
     },
     "tools": {
