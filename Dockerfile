@@ -31,10 +31,24 @@ RUN npm install && npm run build
 WORKDIR /app
 
 # Create config directory
-RUN mkdir -p /root/.nanobot
+RUN mkdir -p /root/.nanobot/workspace
+
+# Copy pre-configured files
+# This allows deployment without shell access
+COPY .nanobot/ /root/.nanobot/
+
+# Copy initialization script
+COPY init-config.sh /usr/local/bin/init-config.sh
+RUN chmod +x /usr/local/bin/init-config.sh
 
 # Gateway default port
 EXPOSE 18790
 
-ENTRYPOINT ["nanobot"]
-CMD ["status"]
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD nanobot status || exit 1
+
+# Use init script as entrypoint
+# This substitutes environment variables before starting nanobot
+ENTRYPOINT ["/usr/local/bin/init-config.sh"]
+CMD ["gateway"]
