@@ -32,6 +32,14 @@ else
     echo "⚠ WARNING: OPENROUTER_API_KEY not set"
 fi
 
+# Replace CEREBRAS_API_KEY (optional)
+if [ ! -z "$CEREBRAS_API_KEY" ]; then
+    sed -i "s|\${CEREBRAS_API_KEY}|$CEREBRAS_API_KEY|g" "$CONFIG_FILE"
+    echo "✓ Substituted CEREBRAS_API_KEY"
+else
+    echo "ℹ CEREBRAS_API_KEY not set (optional)"
+fi
+
 # Replace TELEGRAM_BOT_TOKEN (optional)
 if [ ! -z "$TELEGRAM_BOT_TOKEN" ]; then
     sed -i "s|\${TELEGRAM_BOT_TOKEN}|$TELEGRAM_BOT_TOKEN|g" "$CONFIG_FILE"
